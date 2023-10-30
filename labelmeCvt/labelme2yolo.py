@@ -275,7 +275,7 @@ class Labelme2YOLO(object):
             yaml_file.write('\n')
             yaml_file.write('names_yolo_train:')
             for label, idx in self._label_id_map.items():
-                yaml_file.write('\n\t%d : %s' % (idx, label))
+                yaml_file.write('\n\t%d: %s' % (idx, label))
 
 
 def arg_parser_use():
@@ -318,7 +318,7 @@ if __name__ == '__main__':
     #arg_parser_use()
     local_image_dir = '../datasets/merge_all'
     json_dir = '../datasets/merge_all'
-    val_size=0.2
+    val_size=0.1
     normal_use(local_image_dir=local_image_dir,
                json_dir=json_dir,
                val_size=val_size)
