@@ -273,9 +273,9 @@ class Labelme2YOLO(object):
             yaml_file.write('names_list: [%s]' % names_str)
 
             yaml_file.write('\n')
-            yaml_file.write('names:')
+            yaml_file.write('names_yolo_train:')
             for label, idx in self._label_id_map.items():
-                yaml_file.write('\n %d : %s' % (idx, label))
+                yaml_file.write('\n\t%d : %s' % (idx, label))
 
 
 def arg_parser_use():
