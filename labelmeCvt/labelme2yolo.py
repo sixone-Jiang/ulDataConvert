@@ -269,7 +269,14 @@ class Labelme2YOLO(object):
             for label, _ in self._label_id_map.items():
                 names_str += "'%s', " % label
             names_str = names_str.rstrip(', ')
-            yaml_file.write('names: [%s]' % names_str)
+            # Alice fix  训练时yaml标签配置
+            yaml_file.write('names_list: [%s]' % names_str)
+
+            yaml_file.write('\n')
+            yaml_file.write('names:')
+            for label, idx in self._label_id_map.items():
+                yaml_file.write('\n %d : %s' % (idx, label))
+
 
 def arg_parser_use():
     parser = argparse.ArgumentParser()
