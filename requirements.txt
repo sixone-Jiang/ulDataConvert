@@ -1,0 +1,5 @@
+argparse
+pillow
+opencv-python
+scikit-learn
+labelme
