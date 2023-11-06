@@ -263,6 +263,7 @@ class Labelme2YOLO(object):
                             os.path.join(self._image_dir_path, 'train/'))
             yaml_file.write('val: %s\n\n' % \
                             os.path.join(self._image_dir_path, 'val/'))
+            yaml_file.write('test: ''\n\n')
             yaml_file.write('nc: %i\n\n' % len(self._label_id_map))
             
             names_str = ''
@@ -273,7 +274,7 @@ class Labelme2YOLO(object):
             yaml_file.write('names_list: [%s]' % names_str)
 
             yaml_file.write('\n\n')
-            yaml_file.write('names_yolo_train:')
+            yaml_file.write('names_yolo:')
             for label, idx in self._label_id_map.items():
                 yaml_file.write('\n  %d: %s' % (idx, label))
 

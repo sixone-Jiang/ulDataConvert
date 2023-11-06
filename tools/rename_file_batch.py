@@ -40,8 +40,8 @@ def copy_file(start_dir, output_dir):
             print(os.path.join(start_dir, cls_name, file_name), '->', os.path.join(output_dir, cls_name, cls_name + '_' + str(idx) + '.png'))
 
 if __name__ == '__main__':
-    start_dir = './ori' # before use labelme
-    output_dir = './copy_of_rename' # this dir is output to use labelme
+    start_dir = '../datasets/ori1' # before use labelme
+    output_dir = '../datasets/copy_of_rename' # this dir is output to use labelme
 
     print('---------Starting Rename File---------')
 

@@ -50,10 +50,10 @@ def copy_labelme_output_json_to_one_folder(start_dir, output_dir):
 
 
 if __name__ == '__main__':
-    image_start_dir = '../datasets/ori'
+    image_start_dir = '../datasets/all_labeled'
     image_output_dir = '../datasets/merge_all' # this dir is output to use labelme
     
-    json_start_dir = '../datasets/ori'
+    json_start_dir = '../datasets/all_labeled'
     json_output_dir = '../datasets/merge_all' # this dir is output to use labelme
 
     if not os.path.exists(image_output_dir):
