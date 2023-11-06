@@ -17,3 +17,6 @@
 
 1. the file 'labelme2yolo.py'
    * 转换同一个文件夹下的所有json文件（以及图像本身）为YOLO Train 格式
+
+2. the file 'yolo2labelme.py'
+   * 转换同一个文件下的YOLO格式文件到Labelme
