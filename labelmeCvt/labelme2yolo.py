@@ -23,12 +23,13 @@ from labelme import utils
 
 class Labelme2YOLO(object):
     
-    def __init__(self, json_dir, to_seg=False, local_image_dir=None):
+    def __init__(self, json_dir, to_seg=False, local_image_dir=None, label_set=None):
         self._json_dir = json_dir
         
-        self._label_id_map = self._get_label_id_map(self._json_dir)
+        self._label_id_map = self._get_label_id_map(self._json_dir, label_set)
         self._to_seg = to_seg
         self.local_image_dir = local_image_dir
+        self.total_bbox = 0
 
         i = 'YOLODataset'
         i += '_seg/' if to_seg else '/'
@@ -47,15 +48,15 @@ class Labelme2YOLO(object):
             
             os.makedirs(yolo_path)    
                 
-    def _get_label_id_map(self, json_dir):
-        label_set = set()
-    
-        for file_name in os.listdir(json_dir):
-            if file_name.endswith('json'):
-                json_path = os.path.join(json_dir, file_name)
-                data = json.load(open(json_path))
-                for shape in data['shapes']:
-                    label_set.add(shape['label'])
+    def _get_label_id_map(self, json_dir, label_set=None):
+        if label_set is None:
+            label_set = set()
+            for file_name in os.listdir(json_dir):
+                if file_name.endswith('json'):
+                    json_path = os.path.join(json_dir, file_name)
+                    data = json.load(open(json_path))
+                    for shape in data['shapes']:
+                        label_set.add(shape['label'])
         
         return OrderedDict([(label, label_id) \
                             for label_id, label in enumerate(label_set)])
@@ -226,6 +227,8 @@ class Labelme2YOLO(object):
 
         with open(txt_path, 'w+') as f:
             for yolo_obj_idx, yolo_obj in enumerate(yolo_obj_list):
+                # Alice add
+                self.total_bbox += 1
                 yolo_obj_line = ""
                 for i in yolo_obj:
                     yolo_obj_line += f'{i} '
@@ -278,6 +281,9 @@ class Labelme2YOLO(object):
             for label, idx in self._label_id_map.items():
                 yaml_file.write('\n  %d: %s' % (idx, label))
 
+            yaml_file.write('\n\n')
+            yaml_file.write('total_bbox: %d' % self.total_bbox)
+
 
 def arg_parser_use():
     parser = argparse.ArgumentParser()
@@ -299,11 +305,11 @@ def arg_parser_use():
     else:
         convertor.convert_one(args.json_name)
 
-def normal_use(local_image_dir=None, json_dir=None, val_size=0.1, json_name=None, seg=False):
+def normal_use(local_image_dir=None, json_dir=None, val_size=0.1, json_name=None, seg=False, label_set=None):
     if json_dir is None:
         print('No Json file input')
         return None
-    convertor = Labelme2YOLO(json_dir, to_seg=seg, local_image_dir=local_image_dir)
+    convertor = Labelme2YOLO(json_dir, to_seg=seg, local_image_dir=local_image_dir, label_set=label_set)
     if json_name is None:
         convertor.convert(val_size=val_size)
     else:
@@ -319,8 +325,10 @@ if __name__ == '__main__':
     #arg_parser_use()
     local_image_dir = '../datasets/merge_all'
     json_dir = '../datasets/merge_all'
+    label_set = None # set your label set, None will auto index the label
     val_size=0.1
     normal_use(local_image_dir=local_image_dir,
                json_dir=json_dir,
-               val_size=val_size)
+               val_size=val_size,
+               label_set=label_set)
     
